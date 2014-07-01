@@ -1,0 +1,65 @@
+<html>
+<script src="http://connect.facebook.net/zh_TW/all.js"></script>
+<script>
+	var ihandle=null;
+	window.fbAsyncInit  =function() {
+		FB.init({appId:'417991854893196',status:true,cookie:true,xfbml:true,
+			oauth:true});
+		ihandle=setInterval("FB.getLoginStatus(loginstatus);",1000);
+	}
+	var loginstatus=function(response) {
+		if (!response.authResponse) return;
+		clearInterval(ihandle);
+		command.value="/me/friends";
+	}
+	var callfb=function() {
+		FB.api(command.value,function(response){
+			jsonres.innerHTML=JSON.stringify(response);
+			window.fb=response;//for debug
+		})
+	}
+	var assignment=function(){
+		FB.api("/me/friends",function(response){
+			var name=[];
+			for(var i=0;i<response["data"].length;i++){
+				name.push(response["data"][i]["id"]);
+			}
+			jsonres.innerHTML=JSON.stringify(name);
+			window.fb=response;//for debug
+		})
+	}
+	var picture=function(){
+		FB.api("/me/friends",function(response){
+		var pics=[];
+			for(var i=0;i<response["data"].length;i++){
+				var id=response["data"][i]["id"];
+				pics.push("<img src='http://graph.facebook.com/"+id+"/picture/'></img>");
+			}
+			jsonres.innerHTML=pics.join("a");
+			window.fb=response;//for debug
+		})
+	}
+	
+	var picturename=function(){
+		FB.api("/me/friends",function(response){
+		var pics=[];
+				for(var i=0;i<response["data"].length;i++){
+				var id=response["data"][i]["id"];
+				var name=response["data"][i]["name"];
+				pics.push("<img src='http://graph.facebook.com/"+id+"/picture/'></img>"+name+"<br>");
+			}
+			jsonres.innerHTML=pics.join(" ");
+			window.fb=response;//for debug
+		})
+	}
+	
+</script>
+<div id="fb-root"></div>
+<div class="fb-login-button" size="large" scope="user_status,email" autologoutlink="true"></div>
+<input id="command"></input>
+<button onclick="callfb()">call</button>
+<button onclick="assignment()">assignment</button>
+<button onclick="picture()">picture</button>
+<button onclick="picturename()">picturename</button>
+<div id="jsonres"></div>
+</html>
