@@ -46,7 +46,7 @@
 				for(var i=0;i<response["data"].length;i++){
 				var id=response["data"][i]["id"];
 				var name=response["data"][i]["name"];
-				pics.push("<img src='http://graph.facebook.com/"+id+"/picture/'></img>"+name+"<br>");
+				pics.push("<img src='http://graph.facebook.com/"+id+"/picture/'></img>"+name+"");
 			}
 			jsonres.innerHTML=pics.join(" ");
 			window.fb=response;//for debug
